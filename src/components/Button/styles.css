@@ -1,0 +1,11 @@
+.button {
+  padding: .75rem;
+  background-color: #28f;
+  color: #eee;
+  font-weight: bold;
+}
+
+.button:disabled {
+  background-color: rgb(27, 87, 155);
+  cursor: not-allowed;
+}

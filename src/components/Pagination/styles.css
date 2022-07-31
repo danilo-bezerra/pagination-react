@@ -1,0 +1,29 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.pagination {
+  display: flex;
+  gap: 1px;
+  margin: 1rem auto;
+  max-width: max-content;
+  border: 2px solid #eee;
+  background-color: #eee;
+}
+
+.button {
+  border-radius: 0;
+}
+
+.container label {
+  position: absolute;
+  left: 0;
+}

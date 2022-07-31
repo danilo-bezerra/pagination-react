@@ -1,0 +1,20 @@
+.post {
+  background-color: #333;
+  border-radius: .25rem;
+  overflow: hidden;
+  box-shadow: 0 0 15px #0008;
+  transition: transform .25s;
+}
+
+
+.post:hover {
+  transform: scale(1.05);
+}
+
+.post img {
+  max-width: 100%;
+}
+
+.post .post-content {
+  padding: 1rem;
+}
