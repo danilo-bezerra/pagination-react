@@ -17,13 +17,13 @@ export function Pagination({
       <div className="pagination">
         <Button
           text={page - 1}
-          onClick={() => onPageChange("prev")}
+          onClick={() => onPageChange(page - 1)}
           disabled={prevDisabled}
         />
         <Button text={page} />
         <Button
           text={page + 1}
-          onClick={() => onPageChange("next")}
+          onClick={() => onPageChange(page + 1)}
           disabled={nextDisabled}
         />
       </div>

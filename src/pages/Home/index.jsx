@@ -6,36 +6,25 @@ import { fetchPosts } from "../../utils/fetchPosts";
 import "./styles.css";
 
 function Home() {
-  
+  const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(4);
+  const [searchText, setSearchText] = useState("");
 
-
-  const [postsProvider, setPostsProvider] = useState({
-    posts: [],
-    allPosts: [],
-    page: 1,
-    postsPerPage: 4,
-  });
-
-  const [searchText, setSearchText] = useState('')
-
-  const { posts, allPosts, page, postsPerPage } = postsProvider;
-
-  const filteredPosts = !!searchText ? allPosts.filter(post => post.title.toLowerCase().includes(searchText)) : posts
+  const filteredPosts = !!searchText
+    ? allPosts.filter((post) => post.title.toLowerCase().includes(searchText))
+    : posts;
 
   function handleChangePage(value) {
-    if (value == "next") {
-      return setPostsProvider((val) => ({ ...val, page: val.page + 1 }));
-    }
-    setPostsProvider((val) => ({ ...val, page: val.page - 1 }));
+    setPage(value);
   }
 
   function handleChangePostsPerPage(num) {
-    setPostsProvider((val) => ({
-      ...val,
-      postsPerPage: num,
-      // verifica se a pagina atual pode ficar sem posts, se sim, a pagina atual é alterada para a ultima pagina que terá ao menos 1 post
-      page: Math.ceil(allPosts.length / num) < page ? Math.ceil(allPosts.length / num) : val.page
-    }));
+    setPostsPerPage(num);
+    if (Math.ceil(allPosts.length / num) < page) {
+      setPage(Math.ceil(allPosts.length / num));
+    }
   }
 
   function handleSlicePostsToShow(postList, page, postsPerPage) {
@@ -46,21 +35,15 @@ function Home() {
     async function getPosts() {
       const postList = await fetchPosts();
 
-      setPostsProvider((val) => ({
-        ...val,
-        allPosts: postList,
-        posts: handleSlicePostsToShow(postList, val.page, val.postsPerPage),
-      }));
+      setAllPosts(postList);
+      setPosts(handleSlicePostsToShow(postList, page, postsPerPage));
     }
     getPosts();
   }, []);
 
   useEffect(() => {
     if (allPosts) {
-      setPostsProvider((val) => ({
-        ...val,
-        posts: handleSlicePostsToShow(val.allPosts, val.page, val.postsPerPage),
-      }));
+      setPosts(handleSlicePostsToShow(allPosts, page, postsPerPage));
     }
   }, [page, postsPerPage]);
 
@@ -78,7 +61,11 @@ function Home() {
           placeholder="Search for a post..."
         />
       </form>
-      {filteredPosts.length > 0 ? <PostList posts={filteredPosts} /> : <h2>Not for you here...</h2>}
+      {filteredPosts.length > 0 ? (
+        <PostList posts={filteredPosts} />
+      ) : (
+        <h2>Not for you here...</h2>
+      )}
       {!searchText && (
         <Pagination
           page={page}
@@ -91,4 +78,5 @@ function Home() {
     </>
   );
 }
+
 export default Home;
